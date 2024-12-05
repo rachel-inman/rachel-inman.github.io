@@ -1,1 +1,171 @@
 Hello World
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="headshot-1.jpg" type="image/icon type">
+    <title>Rachel Inman</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: #fff5eb;
+            color: #2d1810;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4rem;
+            min-height: 100vh;
+            align-items: center;
+        }
+
+        .image-section {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .content-section {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        img {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border: 3px solid rgba(211, 84, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #2d1810, #d35400);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 1.8rem;
+            color: #444;
+            padding: 1.2rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.5);
+            transition: transform 0.2s ease;
+            border: 2px solid rgba(211, 84, 0, 0.15);
+        }
+
+        p:hover {
+            transform: translateX(8px);
+            border-color: rgba(211, 84, 0, 0.3);
+        }
+
+        .company-link {
+            color: #d35400;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .company-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #d35400;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .company-link:hover {
+            color: #a04000;
+        }
+
+        .company-link:hover::after {
+            transform: scaleX(1);
+        }
+
+        .highlight {
+            color: #e67e22;
+            font-weight: 500;
+        }
+
+        .links {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 3rem;
+            justify-content: center;
+        }
+
+        .links a {
+            color: #d35400;
+            text-decoration: none;
+            padding: 0.7rem 1.4rem;
+            border: 2px solid #d35400;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .links a:hover {
+            background-color: #d35400;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(211, 84, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                gap: 2rem;
+            }
+            
+            .image-section, .content-section {
+                flex: 100%;
+            }
+
+            h1 {
+                font-size: 2.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-section">
+            <img src="headshot.jpg" alt="Profile Photo">
+        </div>
+        <div class="content-section">
+            <h1>Rachel Inman</h1>
+            <p>Software engineer based in NYC, currently at <a href="https://www.captivateiq.com" class="company-link" target="_blank">CaptivateIQ</a></p>
+            <p>This month's project: <a href="https://adventofcode.com/" class="company-link" target="_blank">Advent of Code</a> 👀</p>
+            <div class="links">
+                <a href="https://github.com/rachel-inman" target="_blank">GitHub</a>
+                <a href="https://www.linkedin.com/in/rachel-inman/" target="_blank">LinkedIn</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
