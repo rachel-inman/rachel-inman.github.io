@@ -1,152 +1,448 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="headshot.jpg" type="image/icon type">
+    <title>Rachel Inman</title>
+    <meta name="description" content="Software engineer in New York.">
+
+    <link rel="icon" href="headshot.jpg" type="image/jpeg">
+    <link rel="canonical" href="https://rachelinman.dev/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://rachelinman.dev/">
+    <meta property="og:title" content="Rachel Inman">
+    <meta property="og:description" content="Software engineer in New York.">
+    <meta property="og:image" content="https://rachelinman.dev/headshot.jpg">
+    <meta name="twitter:card" content="summary">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    <title>Rachel Inman</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <script>
+        // Set the theme before first paint so there's no flash of the wrong one.
+        (function () {
+            try {
+                var stored = localStorage.getItem('theme');
+                var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+                document.documentElement.setAttribute('data-theme', stored || (prefersLight ? 'light' : 'dark'));
+            } catch (e) { /* localStorage blocked, keep the default */ }
+        })();
+    </script>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-            -webkit-font-smoothing: antialiased;
+        :root {
+            --bg: #0E1013;
+            --ink: #E6E3DD;
+            --muted: #868D95;
+            --accent: #7FD1AE;
+            --border: rgba(230, 227, 221, 0.11);
+            --border-strong: rgba(230, 227, 221, 0.28);
+
+            --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+            --sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
         }
+
+        [data-theme="light"] {
+            --bg: #FBFAF8;
+            --ink: #16181B;
+            --muted: #5C636B;
+            --accent: #17795A;
+            --border: rgba(0, 0, 0, 0.11);
+            --border-strong: rgba(0, 0, 0, 0.30);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html { -webkit-text-size-adjust: 100%; }
 
         body {
-            background-color: #ffffff;
-            color: #000000;
-            line-height: 1.5;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 2rem;
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: var(--sans);
+            font-size: 16px;
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color 0.25s ease, color 0.25s ease;
         }
 
-        .container {
-            max-width: 640px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3rem;
-            padding-top: 3rem;
-        }
-
-        .image-section img {
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .content-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-            text-align: center;
-            width: 100%;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
-
-        p {
-            font-size: 1.125rem;
-            color: #333333;
-            line-height: 1.6;
-            max-width: 480px;
+        .wrap {
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
         }
 
         a {
-            color: #000000;
+            color: var(--ink);
             text-decoration: none;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-            padding-bottom: 1px;
-            transition: border-color 0.2s ease;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.18s ease, border-color 0.18s ease;
         }
 
-        a:hover {
-            border-color: #000000;
+        a:hover { color: var(--accent); border-color: var(--accent); }
+
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+            border-radius: 2px;
         }
 
-        .projects {
-            display: flex;
-            flex-direction: column;
+        /* theme toggle, top right */
+
+        .topbar { display: flex; justify-content: flex-end; }
+
+        .theme-toggle {
+            font: inherit;
+            color: var(--muted);
+            background: transparent;
+            border: none;
+            padding: 0.4rem;
+            margin: -0.4rem;
+            cursor: pointer;
+            line-height: 0;
+            transition: color 0.18s ease;
+        }
+
+        .theme-toggle:hover { color: var(--accent); }
+        .theme-toggle svg { width: 16px; height: 16px; }
+        [data-theme="dark"] .icon-sun,
+        [data-theme="light"] .icon-moon { display: none; }
+
+        /* intro */
+
+        .intro { padding-top: 3.5rem; }
+
+        .avatar {
+            width: 92px;
+            height: 92px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            margin-bottom: 1.75rem;
+        }
+
+        h1 {
+            font-size: 1.875rem;
+            font-weight: 500;
+            letter-spacing: -0.025em;
+            margin: 0 0 0.4rem;
+        }
+
+        .role {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin: 0 0 1.6rem;
+        }
+
+        .blurb { margin: 0; color: var(--muted); }
+
+        .prose { color: var(--muted); }
+        .prose p { margin: 0 0 0.9rem; }
+        .prose p:last-child { margin-bottom: 0; }
+
+        .bullets {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            color: var(--muted);
+        }
+
+        .bullets li {
+            display: grid;
+            grid-template-columns: 1.25rem 1fr;
+            align-items: baseline;
+            padding: 0.35rem 0;
+        }
+
+        .bullets li::before {
+            content: "\2022";
+            color: var(--accent);
+            font-family: var(--mono);
+        }
+
+        /* where i've been */
+
+        h3 {
+            font-family: var(--mono);
+            font-size: 0.6875rem;
+            font-weight: 400;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin: 0 0 1rem;
+        }
+
+        section { margin-top: 3.5rem; }
+
+        /* the two halves of the page */
+
+        .row {
+            display: grid;
+            grid-template-columns: 6rem 1fr;
             gap: 1rem;
-            width: 100%;
-            max-width: 480px;
+            align-items: baseline;
+            padding: 0.7rem 0;
+            border-top: 1px solid var(--border);
         }
 
-        .links {
-            display: flex;
-            gap: 1.5rem;
-            margin-top: 0.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
+        .row:last-child { border-bottom: 1px solid var(--border); }
+
+        .years,
+        .label {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: var(--muted);
         }
+
+        .where { font-weight: 500; }
+
+        .what {
+            display: block;
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        /* link buttons */
+
+        .links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.75rem; }
 
         .links a {
-            font-size: 1rem;
-            padding: 0.75rem 1.5rem;
-            border: 1px solid #000000;
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.04em;
+            color: var(--ink);
+            border: 1px solid var(--border-strong);
             border-radius: 6px;
-            transition: all 0.2s ease;
-            font-weight: 500;
+            padding: 0.55rem 1.1rem;
+            transition: color 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
         }
 
         .links a:hover {
-            background-color: #000000;
-            color: #ffffff;
+            color: var(--bg);
+            background: var(--accent);
+            border-color: var(--accent);
         }
 
-        @media (max-width: 640px) {
-            .container {
-                padding-top: 1rem;
-                gap: 2rem;
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                transition-duration: 0.001ms !important;
+                animation-duration: 0.001ms !important;
             }
+        }
 
-            .image-section img {
-                width: 180px;
-                height: 180px;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            .links {
-                gap: 1rem;
-            }
-
-            .links a {
-                padding: 0.6rem 1.2rem;
-            }
+        @media (max-width: 480px) {
+            .wrap { padding: 1.5rem 1.25rem 3rem; }
+            .intro { padding-top: 2.5rem; }
+            .row { grid-template-columns: 5rem 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="image-section">
-            <img src="headshot.jpg" alt="Rachel Inman">
-        </div>
-        <div class="content-section">
+<div class="wrap">
+
+    <div class="topbar">
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch color theme">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path>
+            </svg>
+        </button>
+    </div>
+
+    <main>
+        <!--
+          ===========================================================================
+          HOW TO ADD THINGS
+
+          Every section on this page is one of two patterns.
+
+          1. A LIST SECTION. Used by Where I've been.
+             The label column is narrow, so keep labels to about one short word
+             (or a number, or a year). Copy this whole block for a new section:
+
+                <section>
+                    <h3>Section name</h3>
+                    <div class="row">
+                        <span class="label">label</span>
+                        <span>Whatever you want to say.</span>
+                    </div>
+                </section>
+
+             Optionally, a second line in small monospace under the main text:
+
+                <span>Main text<span class="what">the smaller line</span></span>
+
+          2. A PROSE SECTION. Used by About me. For anything that needs
+             paragraphs rather than rows:
+
+                <section class="prose">
+                    <h3>Section name</h3>
+                    <p>First paragraph.</p>
+                    <p>Second paragraph.</p>
+                </section>
+
+             For a plain bulleted list instead, as in My philosophy on work:
+
+                <ul class="bullets">
+                    <li>One line</li>
+                </ul>
+
+          To reorder sections, move the <section> blocks. To drop one, delete it.
+          Links are <a href="">like this</a> and need nothing else.
+          ===========================================================================
+        -->
+
+        <div class="intro">
+            <img class="avatar" src="headshot.jpg" alt="Rachel Inman" width="92" height="92">
             <h1>Rachel Inman</h1>
-            <p>Software engineer based in NYC, currently at <a href="https://www.captivateiq.com" target="_blank">CaptivateIQ</a></p>
-            <div class="links">
-                <a href="https://github.com/rachel-inman" target="_blank">GitHub</a>
-                <a href="https://www.linkedin.com/in/rachel-inman/" target="_blank">LinkedIn</a>
-                <a href="https://rachelinmandev.wordpress.com" target="_blank">Blog</a>
+            <p class="role">Software Engineer &middot; New York</p>
+
+            <div class="prose">
+                <p>
+                    Software engineer with six years of experience, currently building UI frameworks in
+                    C++ for wearable devices at Meta Reality Labs. Previously, I worked as a full-stack
+                    engineer at a Series C startup and a Fortune 500 company. Lately I've been enjoying
+                    systems work, API design, and building developer-facing infrastructure.
+                </p>
             </div>
         </div>
-    </div>
+
+        <section class="prose">
+            <h3>About me</h3>
+            <p>I'm interested in abstractions and how to model complex systems effectively.</p>
+            <p>
+                Majoring in philosophy was a fun way to study this in theory, and working with software
+                is a fun way to study it in practice. I enjoy transforming real-world messiness into
+                simple, elegant solutions while respecting the limits of our ability to do so.
+            </p>
+        </section>
+
+        <section>
+            <h3>My philosophy on work</h3>
+            <ul class="bullets">
+                <li>Collaboration and autonomy are friends</li>
+                <li>Pay attention to the bugs under rocks</li>
+                <li>Before you solve a problem, make sure it's useful</li>
+                <li>Respectful, open communication matters</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Favorite engineering moments</h3>
+            <ul class="bullets">
+                <li>Spending an hour debugging a frontend issue only to discover the user's browser
+                    extension was rewriting the page</li>
+                <li>Going down a rabbit hole investigating a flaky CI failure that turned out to be much
+                    bigger than anyone expected</li>
+                <li>My first real production feature: replacing hardcoded strings to internationalize a
+                    web app</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Where I've been</h3>
+            <div class="row">
+                <span class="years">2025 &ndash;</span>
+                <span><span class="where">Meta Reality Labs</span><span class="what">wearables &middot; ui framework &middot; c++</span></span>
+            </div>
+            <div class="row">
+                <span class="years">2022 &ndash; 25</span>
+                <span><span class="where">CaptivateIQ</span><span class="what">sales commissions &middot; full-stack &middot; react/django</span></span>
+            </div>
+            <div class="row">
+                <span class="years">2020 &ndash; 22</span>
+                <span><span class="where">CBRE Group</span><span class="what">commercial real estate &middot; full-stack &middot; react/django</span></span>
+            </div>
+            <div class="row">
+                <span class="years">2016 &ndash; 20</span>
+                <span><span class="where">Princeton University</span><span class="what">a.b. philosophy &middot; minor in applications of computing</span></span>
+            </div>
+        </section>
+
+        <section class="prose">
+            <h3>Why did you major in philosophy?</h3>
+            <!--
+              The evangelical sentence is the one line here that discloses something
+              employers can't legally ask about. Delete it if you'd rather not.
+            -->
+            <p>
+                Philosophy was personally significant to me in my teens and gave me tools to examine the
+                evangelical worldview I grew up in.
+            </p>
+            <p>
+                My philosophical interests center around epistemology and ethics. In junior year, I
+                focused on the epistemology of disagreement: the conditions under which it's sensible to
+                change your mind when someone disagrees with you. In senior year, I wrote my
+                thesis, advised by Peter Singer, on the ethics of distributed vs. individual
+                responsibility, using climate change as a lens.
+            </p>
+        </section>
+
+        <!--
+          Parked until there are blog posts to point at:
+
+        <section>
+            <h3>Things I'm thinking about</h3>
+            <ul class="bullets">
+                <li>Privacy in the age of convenient surveillance</li>
+                <li>The relationship of technology to social structures</li>
+                <li>How AI fits into our lives</li>
+            </ul>
+        </section>
+        -->
+
+        <!--
+          Ready for when there's something to put here. Uncomment, fill in, delete the rest.
+          Same for projects: copy this block and change the heading.
+
+        <section>
+            <h3>Writing</h3>
+            <div class="row">
+                <span class="label">2026</span>
+                <span><a href="">Title of the post</a><span class="what">one line on what it argues</span></span>
+            </div>
+        </section>
+        -->
+
+        <section class="prose">
+            <h3>What I'm looking for</h3>
+            <p>
+                I enjoy building practical solutions to ambiguous problems. I value being detail-oriented. I
+                seek out environments that value open, respectful communication, autonomy, and
+                collaboration. Reach out for a resume at
+                <a href="mailto:rachel.inman@protonmail.com">rachel.inman@protonmail.com</a>.
+            </p>
+            <nav class="links" aria-label="Elsewhere">
+                <a href="https://github.com/rachel-inman" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://www.linkedin.com/in/rachel-inman/" target="_blank" rel="noopener">LinkedIn</a>
+            </nav>
+        </section>
+    </main>
+
+</div>
+
+<script>
+    (function () {
+        var root = document.documentElement;
+        document.getElementById('theme-toggle').addEventListener('click', function () {
+            var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            root.setAttribute('data-theme', next);
+            try { localStorage.setItem('theme', next); } catch (e) { /* ignore */ }
+        });
+    })();
+</script>
 </body>
 </html>
